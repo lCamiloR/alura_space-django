@@ -20,9 +20,7 @@
         {% include 'galeria/partials/_header.html' %}
         <main class="principal">
             {% include 'galeria/partials/_sidemenu.html' %}
-            <section class="conteudo">
-                {% block content %}{% endblock %}
-            </section>
+            {% block content %}{% endblock %}
         </main>
     </div>
     {% include 'galeria/partials/_footer.html' %}
