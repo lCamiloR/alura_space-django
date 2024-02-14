@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+import datetime
 
 class Photograph(models.Model):
 
@@ -8,7 +9,8 @@ class Photograph(models.Model):
         ("NEBULOSA", "Nebulosa"),
         ("ESTRELA", "Estrela"),
         ("GALAXIA", "Galaxia"),
-        ("PLANETA", "Planeta")
+        ("PLANETA", "Planeta"),
+        ("LUA", "Lua"),
     ]
 
     created = models.DateTimeField(auto_now_add=True, null=False, blank=False)
@@ -18,7 +20,8 @@ class Photograph(models.Model):
     category = models.CharField(max_length=100, choices=CATEGORY_OPTIONS, default="")
     description = models.TextField(null=False, blank=False)
     file = models.ImageField(upload_to="photographs/%Y/%m/%d/", blank=True)
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(default=True)
+    photograph_date = models.DateField(default=datetime.datetime.now, blank=False)
     user = models.ForeignKey(
         to=User,
         on_delete=models.SET_NULL,

@@ -1,4 +1,4 @@
-from galeria.models import Photograph
+from apps.galeria.models import Photograph
 
 photograph1 = Photograph(name="Nebulosa de Carina",
                          legend="webbtelescope.org / NASA / James Webb",
