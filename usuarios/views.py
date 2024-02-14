@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from usuarios.forms import LoginForm, CadastroForm
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.models import User
 
 def login(request):
@@ -11,7 +11,7 @@ def login(request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
-            
+
             nome = form["nome_login"].value()
             senha = form["senha"].value()
 
@@ -22,8 +22,11 @@ def login(request):
             )
             if usuario:
                 auth.login(request, usuario)
+                messages.success(request, f"{nome} logado com sucesso!")
                 return redirect("index")
-            
+            else:
+                messages.error(request, "Erro ao efeturar login.")
+
         return redirect("login")
 
     return render(request, "usuarios/login.html", {"form": form})
@@ -35,6 +38,7 @@ def cadastro(request):
         if form.is_valid():
 
             if form["senha_1"].value() != form["senha_2"].value():
+                messages.error(request, "Senhas não correspondem.")
                 return redirect("cadastro")
             
             nome_cadastro = form["nome_cadastro"].value()
@@ -42,6 +46,7 @@ def cadastro(request):
             senha_cadastro = form["senha_1"].value()
 
             if User.objects.filter(username=nome_cadastro).exists():
+                messages.error(request, "Usuário já existente.")
                 return redirect("cadastro")
             
             usuario = User.objects.create_user(
@@ -50,10 +55,15 @@ def cadastro(request):
                 password=senha_cadastro
             )
             usuario.save()
-
+            messages.success(request, f"{nome_cadastro} cadastrado com sucesso!")
             return redirect("login")
 
     else:
         form = CadastroForm()
         return render(request, "usuarios/cadastro.html", {"form": form})
+    
+def logout(request):
+    auth.logout(request)
+    messages.success(request, "Logout efetuado com sucesso.")
+    return redirect("login")
 
