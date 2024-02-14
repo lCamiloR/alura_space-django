@@ -5,10 +5,10 @@ class PhotographAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "legend", "category", "published", "created", "modified")
     list_display_links = ("id", "name")
     empty_value_display = '-empty-'
-    fields = (('name', 'legend'), ("category", "published"), "file", "description", "created", "modified")
+    fields = (('name', 'legend'), ("category", "published"), "file", "description", "created", "modified", "user")
     readonly_fields = ("created", "modified")
     search_fields = ("name",)
-    list_filter = ("category",)
+    list_filter = ("category", "user",)
     list_editable = ("published",)
     list_per_page = 10
 

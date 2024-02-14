@@ -32,14 +32,12 @@ def login(request):
     return render(request, "usuarios/login.html", {"form": form})
 
 def cadastro(request):
+    form = CadastroForm()
+
     if request.method == "POST":
         form = CadastroForm(request.POST)
 
         if form.is_valid():
-
-            if form["senha_1"].value() != form["senha_2"].value():
-                messages.error(request, "Senhas não correspondem.")
-                return redirect("cadastro")
             
             nome_cadastro = form["nome_cadastro"].value()
             email_cadastro = form["email_cadastro"].value()
@@ -57,10 +55,8 @@ def cadastro(request):
             usuario.save()
             messages.success(request, f"{nome_cadastro} cadastrado com sucesso!")
             return redirect("login")
-
-    else:
-        form = CadastroForm()
-        return render(request, "usuarios/cadastro.html", {"form": form})
+    
+    return render(request, "usuarios/cadastro.html", {"form": form})
     
 def logout(request):
     auth.logout(request)

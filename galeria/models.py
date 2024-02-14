@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Photograph(models.Model):
 
@@ -18,6 +19,13 @@ class Photograph(models.Model):
     description = models.TextField(null=False, blank=False)
     file = models.ImageField(upload_to="photographs/%Y/%m/%d/", blank=True)
     published = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+        related_name="user"
+    )
 
     def __str__(self) -> str:
         return self.name
