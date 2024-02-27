@@ -9,7 +9,9 @@ def index(request):
         return redirect('login')
     
     photographs = Photograph.objects.order_by("-created").filter(published=True)
-    return render(request, r"galeria\index.html", {"cards": photographs})
+    known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
+
+    return render(request, r"galeria\index.html", {"cards": photographs, "categories": known_categories})
 
 def imagem(request, photograph_id):
     photograph = get_object_or_404(Photograph, pk=photograph_id)
@@ -27,7 +29,9 @@ def buscar(request):
         if nome_a_buscar:
             macthed_photographs = photographs.filter(name__icontains=nome_a_buscar)
 
-    return render(request, r"galeria\buscar.html", {"cards": macthed_photographs})
+    known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
+
+    return render(request, r"galeria\index.html", {"cards": macthed_photographs, "categories": known_categories})
 
 def nova_imagem(request):
     if not request.user.is_authenticated:
@@ -36,19 +40,39 @@ def nova_imagem(request):
     
     form = PhotographForm()
     if request.method == 'POST':
-        print("é um POST")
         form = PhotographForm(request.POST, request.FILES)
-        print(request.POST)
         if form.is_valid():
-            print("Form é válido")
             form.save()
             messages.success(request, "Nova fotografia cadastrada.")
             return redirect('index')
     
     return render(request, r"galeria\nova_imagem.html", {'form': form})
 
-def editar_imagem(request):
-    return render(request, r"galeria\editar_imagem.html")
+def editar_imagem(request, photograph_id):
+    photograph = get_object_or_404(Photograph, pk=photograph_id)
+    form = PhotographForm(instance=photograph)
 
-def deletar_imagem(request):
-    return render(request, r"galeria\deletar_imagem.html")
+    if request.method == 'POST':
+        form = PhotographForm(request.POST, request.FILES, instance=photograph)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Alterações salvas.")
+            return redirect('index')
+
+    return render(request, r"galeria\editar_imagem.html", {'form': form, "photograph": photograph})
+
+def deletar_imagem(request, photograph_id):
+    photograph = get_object_or_404(Photograph, pk=photograph_id)
+
+    if photograph:
+        photograph.delete()
+        messages.success(request, "Fotografia deletada.")
+
+    return redirect('index')
+
+def filtro(request, category):
+
+    photographs = Photograph.objects.order_by("created").filter(published=True, category=category)
+    known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
+
+    return render(request, r"galeria\index.html", {"cards": photographs, "categories": known_categories})
