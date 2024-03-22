@@ -88,16 +88,16 @@ DATABASES = {
     }
 }
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'alura_space',
-#        'USER': str(os.getenv("MYSQL_USER")),
-#        'PASSWORD': str(os.getenv("MYSQL_PASSWORD")),
-#        'HOST': 'localhost',
-#        'PORT': '3306'
-#    }
-#}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'alura_space',
+#         'USER': str(os.getenv("MYSQL_USER")),
+#         'PASSWORD': str(os.getenv("MYSQL_PASSWORD")),
+#         'HOST': 'localhost',
+#         'PORT': '3306'
+#     }
+# }
 
 
 # Password validation

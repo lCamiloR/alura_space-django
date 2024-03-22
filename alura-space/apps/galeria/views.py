@@ -11,11 +11,11 @@ def index(request):
     photographs = Photograph.objects.order_by("-created").filter(published=True)
     known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
 
-    return render(request, r"galeria\index.html", {"cards": photographs, "categories": known_categories})
+    return render(request, r"galeria/index.html", {"cards": photographs, "categories": known_categories})
 
 def imagem(request, photograph_id):
     photograph = get_object_or_404(Photograph, pk=photograph_id)
-    return render(request, r"galeria\imagem.html", {"photograph": photograph})
+    return render(request, r"galeria/imagem.html", {"photograph": photograph})
 
 def buscar(request):
     if not request.user.is_authenticated:
@@ -31,7 +31,7 @@ def buscar(request):
 
     known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
 
-    return render(request, r"galeria\index.html", {"cards": macthed_photographs, "categories": known_categories})
+    return render(request, r"galeria/index.html", {"cards": macthed_photographs, "categories": known_categories})
 
 def nova_imagem(request):
     if not request.user.is_authenticated:
@@ -46,7 +46,7 @@ def nova_imagem(request):
             messages.success(request, "Nova fotografia cadastrada.")
             return redirect('index')
     
-    return render(request, r"galeria\nova_imagem.html", {'form': form})
+    return render(request, r"galeria/nova_imagem.html", {'form': form})
 
 def editar_imagem(request, photograph_id):
     photograph = get_object_or_404(Photograph, pk=photograph_id)
@@ -59,7 +59,7 @@ def editar_imagem(request, photograph_id):
             messages.success(request, "Alterações salvas.")
             return redirect('index')
 
-    return render(request, r"galeria\editar_imagem.html", {'form': form, "photograph": photograph})
+    return render(request, r"galeria/editar_imagem.html", {'form': form, "photograph": photograph})
 
 def deletar_imagem(request, photograph_id):
     photograph = get_object_or_404(Photograph, pk=photograph_id)
@@ -75,4 +75,4 @@ def filtro(request, category):
     photographs = Photograph.objects.order_by("created").filter(published=True, category=category)
     known_categories = [category[-1] for category in Photograph.CATEGORY_OPTIONS]
 
-    return render(request, r"galeria\index.html", {"cards": photographs, "categories": known_categories})
+    return render(request, r"galeria/index.html", {"cards": photographs, "categories": known_categories})

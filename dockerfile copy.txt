@@ -37,10 +37,3 @@ RUN apt-get update -y && \
 # Adiciona a pasta scripts e venv/bin 
 # no $PATH do container.
 ENV PATH="/venv/bin:$PATH"
-
-
-# O docker file funcionou para a criação da imagem, mais ainda assim é preciso definir a porta de comunicação durante a execução do container
-# docker run -it -p 8000:8000 custodian/alura-space:1.0 bash
-
-# na hora de executar o django tbm é preciso definir uma rede diferente da localhost, pois isso faz o django conflitar com a maquina HOST
-# python manage.py runserver 0.0.0.0:8000
